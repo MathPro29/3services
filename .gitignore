@@ -1,0 +1,15 @@
+# Virtual Environment
+examenv/
+venv/
+env/
+
+# Python cache
+**/__pycache__/
+*.pyc
+
+# Docker
+.dockerignore
+
+# OS files
+.DS_Store
+Thumbs.db

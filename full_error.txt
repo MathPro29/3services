@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/app/fastapi_server.py", line 5, in <module>
+    from grpc_server import serve as grpc_serve
+  File "/app/grpc_server.py", line 5, in <module>
+    import user_pb2
+  File "/app/user_pb2.py", line 12, in <module>
+    _runtime_version.ValidateProtobufRuntimeVersion(
+  File "/usr/local/lib/python3.11/site-packages/google/protobuf/runtime_version.py", line 106, in ValidateProtobufRuntimeVersion
+    _ReportVersionError(
+  File "/usr/local/lib/python3.11/site-packages/google/protobuf/runtime_version.py", line 50, in _ReportVersionError
+    raise VersionError(msg)
+google.protobuf.runtime_version.VersionError: Detected mismatched Protobuf Gencode/Runtime major versions when loading user.proto: gencode 6.31.1 runtime 5.29.2. Same major version is required. See Protobuf version guarantees at https://protobuf.dev/support/cross-version-runtime-guarantee.

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Service A - Host Service (gRPC Server + FastAPI)
+  service_a:
+    build:
+      context: .
+      dockerfile: service_A-host/Dockerfile
+    container_name: tricommu_service_a
+    ports:
+      - "50051:50051"  # gRPC port
+      - "8000:8000"    # FastAPI port
+    networks:
+      - tricommu_network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Service B - gRPC Client
+  service_b:
+    build:
+      context: .
+      dockerfile: service_B/Dockerfile
+    container_name: tricommu_service_b
+    depends_on:
+      service_a:
+        condition: service_healthy
+    networks:
+      - tricommu_network
+    environment:
+      - GRPC_SERVER=service_a:50051
+
+  # Service C - REST Client
+  service_c:
+    build:
+      context: .
+      dockerfile: service_C/Dockerfile
+    container_name: tricommu_service_c
+    depends_on:
+      service_a:
+        condition: service_healthy
+    networks:
+      - tricommu_network
+    environment:
+      - REST_API_URL=http://service_a:8000
+
+networks:
+  tricommu_network:
+    driver: bridge
